@@ -1,5 +1,5 @@
 ## Read in data set ####
-setwd("U:/soga/private/02_Projekte/00_Operationalisierung")
+setwd("~/02_Projekte/00_Operationalisierung/operationalisierung")
 source("utilitiy_functions/readMNISTintoR.R")
 d.mnist <- load_mnist()
 str(d.mnist)
