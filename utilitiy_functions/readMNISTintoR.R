@@ -26,8 +26,8 @@ load_mnist <- function(path = "mnist") {
   }
   load_image_file <- function(filename) {
     ret <- list()
-    f <- gzfile(filename, "rb")
-    readBin(f, "integer", n = 1, size = 4, endian = "big")
+    f <- gzfile(filename, "rb") # Open connection for reading in binary mode ("rb"), filename = path to a file compressed by gzip, i.e. .gz
+    readBin(f, "integer", n = 1, size = 4, endian = "big") # Read binary data from connection, here first row is read
     ret$n <- readBin(f, "integer", n = 1, size = 4, endian = "big")
     nrow <- readBin(f, "integer", n = 1, size = 4, endian = "big")
     ncol <- readBin(f, "integer", n = 1, size = 4, endian = "big")
@@ -36,6 +36,20 @@ load_mnist <- function(path = "mnist") {
     close(f)
     return(ret)
   }
+  
+  # TEST SET IMAGE FILE (t10k-images-idx3-ubyte):
+  # [offset] [type]          [value]          [description]
+  # 0000     32 bit integer  0x00000803(2051) magic number
+  # 0004     32 bit integer  10000            number of images
+  # 0008     32 bit integer  28               number of rows
+  # 0012     32 bit integer  28               number of columns
+  # 0016     unsigned byte   ??               pixel
+  # 0017     unsigned byte   ??               pixel
+  # ........
+  # xxxx     unsigned byte   ??               pixel
+  
+  # Pixels are organized row-wise. Pixel values are 0 to 255. 0 means background (white), 255 means foreground (black). 
+  
   load_label_file <- function(filename) {
     f <- gzfile(filename, "rb")
     readBin(f, "integer", n = 1, size = 4, endian = "big")
