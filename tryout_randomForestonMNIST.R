@@ -9,7 +9,7 @@ m.train.labels <- l.mnist$train$y
 m.test.predictors <- l.mnist$test$x$x
 m.test.labels <- l.mnist$test$y
 
-## not necessary: Generate train and test data frame ####
+## Generate train and test data frame ####
 m.train <- cbind(l.mnist$train$x$x, l.mnist$train$y)
 str(m.train)
 
@@ -29,6 +29,7 @@ d.train$Y <- as.factor(d.train$Y)
 str(d.train)
 str(d.train[,785])
 colnames(d.train)
+saveRDS(d.train, file = "mnist_train_dataframe.rds")
 
 # generate test data frame analogously
 m.test <- cbind(l.mnist$test$x$x, l.mnist$test$y)
@@ -37,6 +38,7 @@ colnames(m.test) <- c.names
 d.test <- as.data.frame(m.test)
 d.test$Y <- as.factor(d.test$Y)
 str(d.test)
+saveRDS(d.test, file = "mnist_test_dataframe.rds")
 
 
 ## Have a look at data ####
@@ -58,23 +60,21 @@ sapply(1:9, function(i) show_digit(d.mnist$train$x$x[i,])) #for(i in 1:9){show_d
 
 ## Train Model on train data ####
 library(randomForest)
-n <- 1000 # 10000 ca. 1h
+n <- nrow(d.train) #1000 schnell, 10000 ca. 1h
 set.seed(1)
 sys.time.seq <- system.time(
-        model.rf <- randomForest(x = d.train[1:n, -785], y = d.train[1:n, 785], do.trace = TRUE) #viel schneller als mit matrix?!
+        model.rf <- randomForest(x = d.train[, -785], y = d.train[, 785], do.trace = TRUE) #mit data frame viel schneller als mit matrix?!
 )[3]
-
-sys.time.seq <- system.time(
-    model.rf <- randomForest(x = m.train.predictors[1:n,], y = m.train.labels[1:n], do.trace = TRUE) # langsam
-)[3]
-
-
-m.train.predictors <- l.mnist$train$x$x
-m.train.labels
-
+# sys.time.seq <- system.time(
+#     model.rf <- randomForest(x = d.train[1:n, -785], y = d.train[1:n, 785], do.trace = TRUE) #mit data frame viel schneller als mit matrix?!
+# )[3]
+# sys.time.seq <- system.time(
+#     model.rf <- randomForest(x = m.train.predictors[1:n,], y = m.train.labels[1:n], do.trace = TRUE) # langsam
+# )[3]
 
 summary(model.rf)
 saveRDS(model.rf, file = paste0("model_rf_", n, ".rds")) 
+saveRDS(sys.time.seq, file = paste0("sys_time_seq_model_rf_", n, ".rds")) 
 model.saved <- readRDS(file = paste0("model_rf_", n, ".rds"))
 
 # Parallelized Random Forests ####
@@ -96,9 +96,10 @@ stopCluster(cl)
 
 ## Predict label of test data
 ?predict.randomForest
+pred <- predict(model.rf, newdata = d.test[,-785], type = "response") # test set as data frame
 pred1 <- predict(model.saved, newdata = d.test[1,-785], type = "response") # test set as data frame
-pred2 <- predict(model.saved, newdata = m.test[1:2,], type = "response") # test set as matrix
-pred2 <- predict(model.saved, newdata = m.test[1], type = "response") # not working
+pred2 <- predict(model.saved, newdata = m.test.predictors[1:2,], type = "response") # test set as matrix
+pred2 <- predict(model.saved, newdata = m.test.predictors[1,], type = "response") # test set as matrix
 str(pred1) # factor
 unbox(as.numeric(as.character(pred1)))
 
@@ -109,8 +110,9 @@ accuracy <- (1-error.rate)
 
 
 
-
-
+# Formats to send image:
+image <- as.numeric(d.test[1, -785])
+saveRDS(image, file = "test_image.rds")
 
 
 
