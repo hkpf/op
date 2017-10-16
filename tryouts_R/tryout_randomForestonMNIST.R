@@ -111,8 +111,8 @@ accuracy <- (1-error.rate)
 
 
 # Formats to send image:
-image <- as.numeric(d.test[1, -785])
-saveRDS(image, file = "test_image.rds")
+# image <- as.numeric(d.test[1, -785])
+# saveRDS(image, file = "test_image.rds")
 
 
 

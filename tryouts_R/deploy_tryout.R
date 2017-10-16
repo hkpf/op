@@ -13,3 +13,8 @@ f.paste <- function(text1, text2){
 }
 
 # funktionieren beide von Postman aus, und neu auch von R direkt
+
+#write the following in (new) R Session to generate Web server
+# library(plumber)
+# r <- plumb("deploy_tryout.R")
+# r$run(port=8000)
