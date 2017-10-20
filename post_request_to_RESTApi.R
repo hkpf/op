@@ -19,8 +19,13 @@ post.df.to.server <- function(data.frame, url){
 # Testing
 obs <- 8
 d.test <- readRDS("mnist_dataframes/mnist_test_dataframe.rds")
+
+# post request to localhost
 post.df.to.server(d.test[obs,-785], "localhost:8000/predict")
 d.test[obs,785]
+
+# post request to Azure VM
+post.df.to.server(d.test[obs,-785], "opvm.westeurope.cloudapp.azure.com:80/predict")
 
 # NAs
 post.df.to.server((is.na(d.test[1,-785]) <- 1), "localhost:8000/predict")
