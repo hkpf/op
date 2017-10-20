@@ -1,5 +1,18 @@
 ## SERVER side
 
+# # install our own packages from github repo
+# # to load models and predict functions from within the packages
+# install.packages("C:/Users/soga/Desktop/op/digiterEmpty.zip", repos = NULL, type = "win.binary")
+# install.packages("C:/Users/soga/Desktop/op/digiterLarge.zip", repos = NULL, type = "win.binary")
+# install.packages("C:/Users/soga/Desktop/op/digiterSmall.zip", repos = NULL, type = "win.binary")
+# 
+# 
+# # install packages from CRAN
+# install.packages("plumber")
+# install.packages("randomForest")
+# install.packages("jsonlite")
+
+# load packages
 library(plumber)
 library(jsonlite)
 library(randomForest)
