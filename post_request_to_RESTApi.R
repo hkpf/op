@@ -36,6 +36,8 @@ post.df.to.server(d.test[obs,-785], "localhost:80/predictemptypkg")
 
 ## post request to Azure VM ####
 post.df.to.server(d.test[obs,-785], "opvm.westeurope.cloudapp.azure.com:80/predict")
+post.df.to.server(d.test[obs,-785], "opvm.westeurope.cloudapp.azure.com:80/predictlargepkg")
+post.df.to.server(d.test[obs,-785], "13.81.66.129:80/predictlargepkg")
 
 # NAs
 post.df.to.server((is.na(d.test[1,-785]) <- 1), "localhost:8000/predict")
