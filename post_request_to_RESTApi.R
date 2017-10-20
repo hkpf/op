@@ -22,22 +22,24 @@ d.test <- readRDS("mnist_dataframes/mnist_test_dataframe.rds")
 
 ## post request to localhost ####
 # on laptop
-post.df.to.server(d.test[obs,-785], "localhost:8000/predict")
+#post.df.to.server(d.test[obs,-785], "localhost:8000/predict")
 post.df.to.server(d.test[obs,-785], "localhost:8000/predictlargepkg")
 post.df.to.server(d.test[obs,-785], "localhost:8000/predictsmallpkg")
 post.df.to.server(d.test[obs,-785], "localhost:8000/predictemptypkg")
 d.test[obs,785]
 
 # on VM
-post.df.to.server(d.test[obs,-785], "localhost:80/predict")
+#post.df.to.server(d.test[obs,-785], "localhost:80/predict")
 post.df.to.server(d.test[obs,-785], "localhost:80/predictlargepkg")
 post.df.to.server(d.test[obs,-785], "localhost:80/predictsmallpkg")
 post.df.to.server(d.test[obs,-785], "localhost:80/predictemptypkg")
 
-## post request to Azure VM ####
-post.df.to.server(d.test[obs,-785], "opvm.westeurope.cloudapp.azure.com:80/predict")
+
+## post request from laptop to Azure VM ####
+#post.df.to.server(d.test[obs,-785], "opvm.westeurope.cloudapp.azure.com:80/predict")
 post.df.to.server(d.test[obs,-785], "opvm.westeurope.cloudapp.azure.com:80/predictlargepkg")
-post.df.to.server(d.test[obs,-785], "13.81.66.129:80/predictlargepkg")
+post.df.to.server(d.test[obs,-785], "opvm.westeurope.cloudapp.azure.com:80/predictsmallpkg")
+post.df.to.server(d.test[obs,-785], "opvm.westeurope.cloudapp.azure.com:80/predictemptypkg")
 
 # NAs
 post.df.to.server((is.na(d.test[1,-785]) <- 1), "localhost:8000/predict")
