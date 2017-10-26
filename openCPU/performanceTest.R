@@ -6,8 +6,11 @@ library(digiterLarge)
 #d.test
 train <- readRDS("mnist_dataframes/mnist_test_dataframe.rds")
 
+#function with OpenCPU in docker
 get_prediction_from_openCPU <- function(image) {
     
+    #for Laptop IP: json <- postForm("http://172.18.120.211/ocpu/library/digiterLarge/R/predict_digit_large/json",
+    #                 .params = list(image=paste('c(', paste(image,collapse = ","), ')', sep = "")))
     json <- postForm("http://localhost/ocpu/library/digiterLarge/R/predict_digit_large/json",
                      .params = list(image=paste('c(', paste(image,collapse = ","), ')', sep = "")))
     
@@ -15,31 +18,33 @@ get_prediction_from_openCPU <- function(image) {
     
 }
 
+#function for local use
 get_prediction_local <- function(image) {
     as.numeric(as.character(predict_digit_large(as.numeric(image))))
 }
 
+#test in RStudio
 system.time({
-    #correct <- 0
+    correct <- 0
     n <- 10
     p <- numeric(n)
     for(i in 1:n) {
         p[i] <- get_prediction_local(train[i,-785])
-        #if(p[i]==train[i,1]) correct <- correct + 1
+        if(p[i]==train[i,785]) correct <- correct + 1
     }
     p
-    #correct / 100}
+    correct / n}
 )
 
-
+# test with OpenCPU in docker
 system.time({
-    #correct <- 0
+    correct <- 0
     n <- 10
     p <- numeric(n)
     for(i in 1:10) {
         p[i] <- get_prediction_from_openCPU(train[i,-785])
-        #if(p[i]==train[i,1]) correct <- correct + 1
+        if(p[i]==train[i,785]) correct <- correct + 1
     }
     p
-    #correct / 100}
+    correct / n}
 )
