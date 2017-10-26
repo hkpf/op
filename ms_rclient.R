@@ -29,8 +29,10 @@ print(manualTransmission(120, 2.8)) # 0.6418125
 # Use `remoteLogin` to authenticate with Server using 
 # the local admin account. Use session = false so no 
 # remote R session started
-remoteLogin("http://13.80.123.14:12800", 
+remoteLogin("http://lin-op-vm.westeurope.cloudapp.azure.com:12800", 
                         session = FALSE)
+# user: admin
+# pw: ...OnBo.
 
 ##########################################################
 #             Publish Model as a Service                 #
