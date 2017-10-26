@@ -2,15 +2,15 @@
 
 
 # # install packages from CRAN
-# install.packages("plumber")
-# install.packages("randomForest")
-# install.packages("jsonlite")
+install.packages("plumber")
+install.packages("randomForest")
+install.packages("jsonlite")
 # install.packages("devtools")
 # 
 # # install our packages from local repo on vm
-# install.packages("C:/Users/soga/Desktop/op/digiterEmpty_0.1.0.tar.gz", repos = NULL, type = "source")
-# install.packages("C:/Users/soga/Desktop/op/digiterEmpty_0.1.0.tar.gz", repos = NULL, type = "source")
-# install.packages("C:/Users/soga/Desktop/op/digiterEmpty_0.1.0.tar.gz", repos = NULL, type = "source")
+install.packages("digiterEmpty_0.1.0.tar.gz", repos = NULL, type = "source")
+install.packages("digiterEmpty_0.1.0.tar.gz", repos = NULL, type = "source")
+install.packages("digiterEmpty_0.1.0.tar.gz", repos = NULL, type = "source")
 
 # not needed anymore: install our own packages from github repo
 # to load models and predict functions from within the packages
@@ -21,7 +21,7 @@
 # load packages
 library(plumber)
 library(randomForest)
-library(devtools)
+#library(devtools)
 library(jsonlite)
 library(digiterEmpty)
 library(digiterSmall)
