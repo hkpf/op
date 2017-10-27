@@ -9,9 +9,12 @@ train <- readRDS("mnist_dataframes/mnist_test_dataframe.rds")
 #function with OpenCPU in docker
 get_prediction_from_openCPU <- function(image) {
     
-    #for Laptop IP: json <- postForm("http://172.18.120.211/ocpu/library/digiterLarge/R/predict_digit_large/json",
+    # for Laptop IP: 
+    # json <- postForm("http://172.18.120.211/ocpu/library/digiterLarge/R/predict_digit_large/json",
     #                 .params = list(image=paste('c(', paste(image,collapse = ","), ')', sep = "")))
-    json <- postForm("http://localhost/ocpu/library/digiterLarge/R/predict_digit_large/json",
+    
+    # for VM:
+    json <- postForm("http://lin-op-vm.westeurope.cloudapp.azure.com/ocpu/library/digiterLarge/R/predict_digit_large/json",
                      .params = list(image=paste('c(', paste(image,collapse = ","), ')', sep = "")))
     
     as.numeric(fromJSON(json))
