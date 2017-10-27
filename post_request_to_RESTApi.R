@@ -36,11 +36,32 @@ post.df.to.server(d.test[obs,-785], "localhost:80/predictemptypkg")
 
 
 ## post request from laptop to Azure VM ####
-#post.df.to.server(d.test[obs,-785], "opvm.westeurope.cloudapp.azure.com:80/predict")
 post.df.to.server(d.test[obs,-785], "lin-op-vm.westeurope.cloudapp.azure.com:80/predictlargepkg")
 post.df.to.server(d.test[obs,-785], "lin-op-vm.westeurope.cloudapp.azure.com:80/predictsmallpkg")
 post.df.to.server(d.test[obs,-785], "lin-op-vm.westeurope.cloudapp.azure.com:80/predictemptypkg")
 
+# more general, to switch ports:
+port <- 8000
+post.df.to.server(d.test[obs,-785], paste0("lin-op-vm.westeurope.cloudapp.azure.com:", port, "/predictlargepkg"))
+post.df.to.server(d.test[obs,-785], paste0("lin-op-vm.westeurope.cloudapp.azure.com:", port, "/predictsmallpkg"))
+post.df.to.server(d.test[obs,-785], paste0("lin-op-vm.westeurope.cloudapp.azure.com:", port, "/predictemptypkg"))
+
+
 # NAs
 post.df.to.server((is.na(d.test[1,-785]) <- 1), "localhost:8000/predict")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
