@@ -33,7 +33,8 @@ system.time({
         if(p[i]==train[i,785]) correct <- correct + 1
     }
     p
-    correct / n}
+    correct / n
+    }
 )
 
 # test with OpenCPU in docker
@@ -46,5 +47,6 @@ system.time({
         if(p[i]==train[i,785]) correct <- correct + 1
     }
     p
-    correct / n}
+    correct / n
+    }
 )
