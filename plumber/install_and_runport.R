@@ -9,5 +9,5 @@ library(digiterSmall)
 library(digiterLarge)
 
 r <- plumb("deploy_rf_pkg.R")
-r$run(port=8080)
+r$run(port=80, host='0.0.0.0')
 

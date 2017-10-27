@@ -29,9 +29,6 @@ RUN R CMD INSTALL /tmp/digiterEmpty_0.1.0.tar.gz --library=/usr/local/lib/R/site
 RUN R CMD INSTALL /tmp/digiterSmall_0.1.0.tar.gz --library=/usr/local/lib/R/site-library 
 RUN R CMD INSTALL /tmp/digiterLarge_0.1.0.tar.gz --library=/usr/local/lib/R/site-library
      
-#pre-install packages
-RUN sed -i 's/\"graphics\"/\"graphics\", \"plumber\", \"randomForest\", \"jsonlite\", \"digiterEmpty\", \"digiterSmall\", \"digiterLarge\", \"R6\", \"httpuv\", \"crayon\", \"Rcpp\"/' /etc/R/Makeconf
-
 #remove the tar.gz-files
 RUN rm -rf /tmp/digiterEmpty_0.1.0.tar.gz \
     rm -rf /tmp/digiterSmall_0.1.0.tar.gz \
@@ -51,7 +48,7 @@ COPY install_and_runport.R /app/myscripts
 COPY deploy_rf_pkg.R /app/myscripts
 
 # Apache ports
-EXPOSE 8080
+EXPOSE 80
 
 WORKDIR /app/myscripts
 CMD ["Rscript", "install_and_runport.R"]

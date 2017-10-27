@@ -13,7 +13,7 @@ library(digiterLarge)
 
 #* @get /test
 hello <- function() {
-    sprintf( "Hello, Test" );
+    return( "Hello, Test" );
 }
 
 #* @post /predictemptypkg
