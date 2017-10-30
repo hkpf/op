@@ -22,7 +22,7 @@ d.test <- readRDS("C:/Users/vepo/Documents/GitRepo/operationalisierung/mnist_dat
 
 ## post request to localhost ####
 # on laptop
-GET("localhost:80/test", verbose())
+GET("localhost:8080/test", verbose())
 post.df.to.server(d.test[obs,-785], "localhost:8080/predictemptypkg")
 post.df.to.server(d.test[obs,-785], "localhost:8080/predictsmallpkg")
 post.df.to.server(d.test[obs,-785], "localhost:8080/predictlargepkg")
@@ -34,7 +34,7 @@ post.df.to.server(d.test[obs,-785], "localhost:8080/predictsmallpkg")
 post.df.to.server(d.test[obs,-785], "localhost:8080/predictlargepkg")
 
 ## post request from laptop to Azure VM ####
-GET("lin-op-vm.westeurope.cloudapp.azure.com:80/test", verbose())
+GET("lin-op-vm.westeurope.cloudapp.azure.com:8080/test", verbose())
 post.df.to.server(d.test[obs,-785], "lin-op-vm.westeurope.cloudapp.azure.com:8080/predictemptypkg")
 post.df.to.server(d.test[obs,-785], "lin-op-vm.westeurope.cloudapp.azure.com:8080/predictsmallpkg")
 post.df.to.server(d.test[obs,-785], "lin-op-vm.westeurope.cloudapp.azure.com:8080/predictlargepkg")
