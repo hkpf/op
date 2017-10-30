@@ -21,8 +21,7 @@ predict.rf <- function(req){
     # access data
     json <- req$postBody # access the json directly
     list <- fromJSON(json)
-    data.frame <- as.data.frame(list)
-    prediction <- predict_digit_empty(data.frame)
+    prediction <- predict_digit_empty(list)
     return(list(label=as.numeric(as.character(prediction))))
 }
 
@@ -31,8 +30,7 @@ predict.rf <- function(req){
     # access data
     json <- req$postBody # access the json directly
     list <- fromJSON(json)
-    data.frame <- as.data.frame(list)
-    prediction <- predict_digit_small(data.frame)
+    prediction <- predict_digit_small(list)
     return(list(label=as.numeric(as.character(prediction))))
 }
 
@@ -41,7 +39,6 @@ predict.rf <- function(req){
     # access data
     json <- req$postBody # access the json directly
     list <- fromJSON(json)
-    data.frame <- as.data.frame(list)
-    prediction <- predict_digit_large(data.frame)
+    prediction <- predict_digit_large(list)
     return(list(label=as.numeric(as.character(prediction))))
 }
