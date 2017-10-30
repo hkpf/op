@@ -20,7 +20,21 @@ obs <- 1
 #d.test <- readRDS("/mnist_dataframes/mnist_test_dataframe.rds")
 d.test <- readRDS("C:/Users/vepo/Documents/GitRepo/operationalisierung/mnist_dataframes/mnist_test_dataframe.rds")
 
+## post request to localhost ####
+# on laptop
 GET("localhost:80/test", verbose())
-post.df.to.server(d.test[obs,-785], "localhost:80/predictemptypkg")
-post.df.to.server(d.test[obs,-785], "localhost:80/predictsmallpkg")
-post.df.to.server(d.test[obs,-785], "localhost:80/predictlargepkg")
+post.df.to.server(d.test[obs,-785], "localhost:8080/predictemptypkg")
+post.df.to.server(d.test[obs,-785], "localhost:8080/predictsmallpkg")
+post.df.to.server(d.test[obs,-785], "localhost:8080/predictlargepkg")
+
+
+# on VM
+post.df.to.server(d.test[obs,-785], "localhost:8080/predictemptypkg")
+post.df.to.server(d.test[obs,-785], "localhost:8080/predictsmallpkg")
+post.df.to.server(d.test[obs,-785], "localhost:8080/predictlargepkg")
+
+## post request from laptop to Azure VM ####
+GET("lin-op-vm.westeurope.cloudapp.azure.com:80/test", verbose())
+post.df.to.server(d.test[obs,-785], "lin-op-vm.westeurope.cloudapp.azure.com:8080/predictemptypkg")
+post.df.to.server(d.test[obs,-785], "lin-op-vm.westeurope.cloudapp.azure.com:8080/predictsmallpkg")
+post.df.to.server(d.test[obs,-785], "lin-op-vm.westeurope.cloudapp.azure.com:8080/predictlargepkg")

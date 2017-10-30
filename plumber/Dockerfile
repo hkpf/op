@@ -48,7 +48,7 @@ COPY install_and_runport.R /app/myscripts
 COPY deploy_rf_pkg.R /app/myscripts
 
 # Apache ports
-EXPOSE 80
+EXPOSE 8080
 
 WORKDIR /app/myscripts
 CMD ["Rscript", "install_and_runport.R"]
