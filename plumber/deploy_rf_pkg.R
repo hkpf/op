@@ -23,7 +23,7 @@ predict.rf <- function(req){
     list <- fromJSON(json)
     prediction <- predict_digit_empty(list)
     #return(list(label=as.numeric(as.character(prediction))))
-    return(prediction)
+    return(as.numeric(as.character(prediction)))
 }
 
 #* @post /predictsmallpkg
@@ -33,7 +33,7 @@ predict.rf <- function(req){
     list <- fromJSON(json)
     prediction <- predict_digit_small(list)
     #return(list(label=as.numeric(as.character(prediction))))
-    return(prediction)
+    return(as.numeric(as.character(prediction)))
 }
 
 #* @post /predictlargepkg
@@ -43,5 +43,5 @@ predict.rf <- function(req){
     list <- fromJSON(json)
     prediction <- predict_digit_large(list)
     #return(list(label=as.numeric(as.character(prediction))))
-    return(prediction)
+    return(as.numeric(as.character(prediction)))
 }
