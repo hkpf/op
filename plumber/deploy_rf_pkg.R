@@ -46,7 +46,7 @@ predict.rf <- function(req){
     json <- req$postBody # access the json directly
     list <- fromJSON(json)
     #print(cat(json))
-    3print(list)
+    #print(list)
     prediction <- predict_digit_large(list)
     #return(list(label=as.numeric(as.character(prediction))))
     return(as.numeric(as.character(prediction)))
