@@ -12,7 +12,8 @@ predict_digit_small <- function(image) {
     }
 
     #modelsmall available in the package
-    predict(modelsmall, image, type = "response")
+    prediction <- predict(modelsmall, image, type = "response")
+    return(as.numeric(as.character(prediction)))
 
 }
 

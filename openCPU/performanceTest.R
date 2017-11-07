@@ -12,10 +12,12 @@ get_prediction_from_openCPU <- function(image) {
     # for Laptop IP: 
     # json <- postForm("http://172.18.120.211/ocpu/library/digiterLarge/R/predict_digit_large/json",
     #                 .params = list(image=paste('c(', paste(image,collapse = ","), ')', sep = "")))
+     json <- postForm("http://localhost:80/ocpu/library/digiterLarge/R/predict_digit_large/json",
+                     .params = list(image=paste('c(', paste(image,collapse = ","), ')', sep = "")))
     
     # for VM:
-    json <- postForm("http://lin-op-vm.westeurope.cloudapp.azure.com/ocpu/library/digiterLarge/R/predict_digit_large/json",
-                     .params = list(image=paste('c(', paste(image,collapse = ","), ')', sep = "")))
+    #json <- postForm("http://lin-op-vm.westeurope.cloudapp.azure.com/ocpu/library/digiterLarge/R/predict_digit_large/json",
+    #                 .params = list(image=paste('c(', paste(image,collapse = ","), ')', sep = "")))
     
     as.numeric(fromJSON(json))
     
