@@ -41,7 +41,7 @@ post.df.to.server(d.test[obs,-785], "lin-op-vm.westeurope.cloudapp.azure.com:80/
 post.df.to.server(d.test[obs,-785], "lin-op-vm.westeurope.cloudapp.azure.com:80/predictemptypkg")
 
 # more general, to switch ports:
-port <- 8000
+port <- 80
 post.df.to.server(d.test[obs,-785], paste0("lin-op-vm.westeurope.cloudapp.azure.com:", port, "/predictlargepkg"))
 post.df.to.server(d.test[obs,-785], paste0("lin-op-vm.westeurope.cloudapp.azure.com:", port, "/predictsmallpkg"))
 post.df.to.server(d.test[obs,-785], paste0("lin-op-vm.westeurope.cloudapp.azure.com:", port, "/predictemptypkg"))
