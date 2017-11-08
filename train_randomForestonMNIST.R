@@ -17,6 +17,7 @@ m.train <- cbind(m.train.predictors, m.train.labels)
 d.train <- as.data.frame(m.train)
 colnames(d.train)[785] <- "Y"
 d.train$Y <- as.factor(d.train$Y)
+saveRDS(d.train, file = "mnist_dataframes/mnist_train_dataframe.rds")
 
 # generate test data frame analogously
 m.test <- cbind(m.test.predictors, m.test.labels)
@@ -43,3 +44,6 @@ confusion.matrix <- table(true = d.test$Y, predicted = pred)
 diag(confusion.matrix) <- 0
 (error.rate <- sum(confusion.matrix)/nrow(d.test))
 (accuracy <- (1-error.rate))
+
+
+# default: ntree = 500
