@@ -1,0 +1,10 @@
+{
+    "success": true,
+    "errorMessage": "",
+    "outputParameters": {
+        "label": "7"
+    },
+    "outputFiles": {},
+    "consoleOutput": "",
+    "changedFiles": []
+}
