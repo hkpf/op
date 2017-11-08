@@ -12,8 +12,8 @@ predict_digit_large <- function(image) {
     }
 
     #modelsmall available in the package
-    predict(modellarge, image, type = "response")
-
+    prediction <- predict(modellarge, image, type = "response")
+    return(as.numeric(as.character(prediction)))
 }
 
 #Test

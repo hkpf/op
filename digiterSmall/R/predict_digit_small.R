@@ -7,12 +7,13 @@
 #' @export
 predict_digit_small <- function(image) {
 
-    if (length(image) != 784) {
+    if (length(image) != 784 ) { #|| max(image) > 255 || min(image)< 0
         stop("wrong image format. Need a 784 vector with values 0-255.")
     }
 
     #modelsmall available in the package
-    predict(modelsmall, image, type = "response")
+    prediction <- predict(modelsmall, image, type = "response")
+    return(as.numeric(as.character(prediction)))
 
 }
 
