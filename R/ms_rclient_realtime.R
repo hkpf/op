@@ -35,9 +35,9 @@ remoteLogin("http://lin-op-vm.westeurope.cloudapp.azure.com:12800",
 # so we use rxDForest
 
 
-d.test <- readRDS("mnist_dataframes/mnist_test_dataframe.rds")
+d.test <- readRDS("../mnist_dataframes/mnist_test_dataframe.rds")
 colnames(dtest)
-d.train <- readRDS("mnist_dataframes/mnist_train_dataframe.rds")
+d.train <- readRDS("../mnist_dataframes/mnist_train_dataframe.rds")
 
 ############################
 # Fit model
@@ -55,17 +55,17 @@ sys.time.seq <- system.time(
 )[3]
 
 #rxDModeltiny <- rxDForest(formula = fmla, data = d.train[1:1000,], nTree = 10): 70.517 secs
-saveRDS(rxDModeltiny, file = paste0("models/model_rxDf_", n,"_",ntree, ".rds"))  
+saveRDS(rxDModeltiny, file = paste0("../models/model_rxDf_", n,"_",ntree, ".rds"))  
 
 #rxDModelsmall <- rxDForest(formula = fmla, data = d.train[1:1000,], nTree = 500):  2712.877 secs.
 # Elapsed time for DForestEstimation: 2712.877 secs.
 # Elapsed time for BxDTreeBase: 2718.325 secs.
-saveRDS(rxDModelsmall, file = paste0("models/model_rxDf_", n,"_",ntree, ".rds"))  
-saveRDS(sys.time.seq, file = paste0("models/sys_time_seq_model_rxDf_", n,"_",ntree, ".rds")) 
+saveRDS(rxDModelsmall, file = paste0("../models/model_rxDf_", n,"_",ntree, ".rds"))  
+saveRDS(sys.time.seq, file = paste0("../models/sys_time_seq_model_rxDf_", n,"_",ntree, ".rds")) 
 
 #  rxDModellarge <- rxDForest(formula = fmla, data = d.train, nTree = 500)
-saveRDS(rxDModellarge, file = paste0("models/model_rxDf_", n,"_",ntree, ".rds")) 
-saveRDS(sys.time.seq, file = paste0("models/sys_time_seq_model_rxDf_", n,"_",ntree, ".rds")) 
+saveRDS(rxDModellarge, file = paste0("../models/model_rxDf_", n,"_",ntree, ".rds")) 
+saveRDS(sys.time.seq, file = paste0("../models/sys_time_seq_model_rxDf_", n,"_",ntree, ".rds")) 
 
 ############################
 # prediction local

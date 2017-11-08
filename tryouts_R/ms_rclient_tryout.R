@@ -8,8 +8,8 @@ library(randomForest)
 # train models: done in other script already
 
 ## load models ####
-model.large <- readRDS(file = "models/model_rf_60000.rds")
-model.small <- readRDS(file = "models/model_rf_1000.rds")
+model.large <- readRDS(file = "../models/model_rf_60000.rds")
+model.small <- readRDS(file = "../models/model_rf_1000.rds")
 
 
 
@@ -27,7 +27,7 @@ predict.empty <- function(num.vec){
 
 ## test function locally by printing results ####
 
-d.test <- readRDS("mnist_dataframes/mnist_test_dataframe.rds")
+d.test <- readRDS("../mnist_dataframes/mnist_test_dataframe.rds")
 obs <- 8
 predict.large(rep(0, 784))
 predict.large(d.test[1,-785])

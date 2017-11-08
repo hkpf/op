@@ -9,7 +9,7 @@ library(randomForest)
 ## (image has 28*28 = 784 pixels with values between 0 and 255 (mnist digit, with Pixels organized row-wise))
 
 ## load model
-model <- readRDS(file = "models/model_rf_60000.rds")
+model <- readRDS(file = "../models/model_rf_60000.rds")
 
 #* @post /predict
 predict.rf <- function(req){

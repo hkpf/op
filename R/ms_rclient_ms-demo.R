@@ -30,9 +30,10 @@ print(manualTransmission(120, 2.8)) # 0.6418125
 # the local admin account. Use session = false so no 
 # remote R session started
 remoteLogin("http://lin-op-vm.westeurope.cloudapp.azure.com:12800", 
-                        session = FALSE)
-# user: admin
-# pw: ...OnBo.
+            username = "admin",
+            password = "PwF/uOnBo1",
+            session = FALSE)
+
 
 ##########################################################
 #             Publish Model as a Service                 #
@@ -97,7 +98,7 @@ print(result$output("answer")) # 0.6418125
 # During this authenticated session, download the  
 # Swagger-based JSON file that defines this service
 swagger <- api$swagger()
-cat(swagger, file = "swagger.json", append = FALSE)
+
 
 # Now share this Swagger-based JSON so others can consume it
 
@@ -120,7 +121,9 @@ remoteLogout()
 
 
 
-
+##########################################################
+#                   Get infos about services R Server    #
+##########################################################
 
 
 # Return metadata for all services hosted on this server

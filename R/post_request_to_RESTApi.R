@@ -18,7 +18,7 @@ post.df.to.server <- function(data.frame, url){
 
 # Testing
 obs <- 8
-d.test <- readRDS("mnist_dataframes/mnist_test_dataframe.rds")
+d.test <- readRDS("../mnist_dataframes/mnist_test_dataframe.rds")
 
 ## post request to localhost ####
 # on laptop

@@ -49,8 +49,8 @@ remoteLogin("http://lin-op-vm.westeurope.cloudapp.azure.com:12800",
 
 
 # load models
-modellarge <- readRDS(file = "models/model_rf_60000.rds")
-modelsmall <- readRDS(file = "models/model_rf_1000.rds")
+modellarge <- readRDS(file = "../models/model_rf_60000.rds")
+modelsmall <- readRDS(file = "../models/model_rf_1000.rds")
 
 ################################################
 # create REST Apis for prediction
@@ -163,7 +163,7 @@ api_small_transp <- getService("modelSmall_transp", "v1.0.0")
 api_empty <- getService("modelEmpty", "v1.0.0")
 
 ## load test data
-dtest <- readRDS("mnist_dataframes/mnist_test_dataframe.rds")
+dtest <- readRDS("../mnist_dataframes/mnist_test_dataframe.rds")
 
 ## post calls to REST Apis
 result <- api_empty$predictempty(dtest[1,-785])
@@ -196,13 +196,13 @@ str(result)
 # Postman Authorization setup: https://blogs.msdn.microsoft.com/mlserver/2017/02/22/rest-calls-using-postman-for-r-server-o16n-2/
 
 swagger_large <- api_large$swagger()
-write(swagger_large, "swaggerFiles/swagger_api_large.json") 
+write(swagger_large, "../swaggerFiles/swagger_api_large.json") 
 swagger_small <- api_small$swagger()
-write(swagger_small, "swaggerFiles/swagger_api_small.json") 
+write(swagger_small, "../swaggerFiles/swagger_api_small.json") 
 swagger_empty <- api_empty$swagger()
-write(swagger_empty, "swaggerFiles/swagger_api_empty.json") 
+write(swagger_empty, "../swaggerFiles/swagger_api_empty.json") 
 swagger_small_transp <- api_small_transp$swagger()
-write(swagger_small_transp, "swaggerFiles/swagger_api_small_transp.json") 
+write(swagger_small_transp, "../swaggerFiles/swagger_api_small_transp.json") 
 
 
 
@@ -251,7 +251,7 @@ print(result$output("answer"))
 # now from POSTMAN
 # get swagger file, which can be imported to postman, and where the calls need to be modified to contain the right url
 swagger_test <- api.test$swagger()
-write(swagger_test, "swagger_api_test.json") 
+write(swagger_test, "../swaggerFiles/swagger_api_test.json") 
 
 
 
