@@ -481,7 +481,7 @@
                     "OutputParameters": {
                 "type": "object",
                 "properties": {
-                    "answer": {
+                    "label": {
                         "type": "number",
                         "description": "numeric"
                     }
