@@ -5,7 +5,7 @@ FROM r-base:3.4.2
 
 # Install R package
 COPY  digiterEmpty_0.1.0.tar.gz /tmp
-COPY  digiterSmall_0.1.0.tar.gz /tmp
+COPY  digiterSmall_0.1.2.tar.gz /tmp
 COPY  digiterLarge_0.1.0.tar.gz /tmp
 
 RUN wget https://cran.r-project.org/src/contrib/jsonlite_1.5.tar.gz -P /tmp
@@ -27,12 +27,12 @@ RUN R CMD INSTALL /tmp/httpuv_1.3.5.tar.gz --library=/usr/local/lib/R/site-libra
 RUN R CMD INSTALL /tmp/plumber_0.4.2.tar.gz --library=/usr/local/lib/R/site-library 
 RUN R CMD INSTALL /tmp/randomForest_4.6-12.tar.gz --library=/usr/local/lib/R/site-library 
 RUN R CMD INSTALL /tmp/digiterEmpty_0.1.0.tar.gz --library=/usr/local/lib/R/site-library 
-RUN R CMD INSTALL /tmp/digiterSmall_0.1.0.tar.gz --library=/usr/local/lib/R/site-library 
+RUN R CMD INSTALL /tmp/digiterSmall_0.1.2.tar.gz --library=/usr/local/lib/R/site-library 
 RUN R CMD INSTALL /tmp/digiterLarge_0.1.0.tar.gz --library=/usr/local/lib/R/site-library
      
 #remove the tar.gz-files
 RUN rm -rf /tmp/digiterEmpty_0.1.0.tar.gz \
-    rm -rf /tmp/digiterSmall_0.1.0.tar.gz \
+    rm -rf /tmp/digiterSmall_0.1.2.tar.gz \
     rm -rf /tmp/digiterLarge_0.1.0.tar.gz \
     rm -rf /tmp/plumber_0.4.2.tar.gz \
     rm -rf /tmp/randomForest_4.6-12.tar.gz \

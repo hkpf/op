@@ -27,14 +27,14 @@ RUN apt-get install -y wget
 # Install R package
 
 COPY  digiterEmpty_0.1.0.tar.gz /tmp
-COPY  digiterSmall_0.1.1.tar.gz /tmp
+COPY  digiterSmall_0.1.3.tar.gz /tmp
 COPY  digiterLarge_0.1.1.tar.gz /tmp
 
 RUN wget https://cran.r-project.org/src/contrib/randomForest_4.6-12.tar.gz -P /tmp
 
 RUN  R CMD INSTALL /tmp/randomForest_4.6-12.tar.gz --library=/usr/local/lib/R/site-library
 RUN  R CMD INSTALL /tmp/digiterEmpty_0.1.0.tar.gz --library=/usr/local/lib/R/site-library
-RUN  R CMD INSTALL /tmp/digiterSmall_0.1.1.tar.gz --library=/usr/local/lib/R/site-library
+RUN  R CMD INSTALL /tmp/digiterSmall_0.1.3.tar.gz --library=/usr/local/lib/R/site-library
 RUN  R CMD INSTALL /tmp/digiterLarge_0.1.1.tar.gz --library=/usr/local/lib/R/site-library
 
 RUN sed -i 's/\"lattice\"/\"lattice\",\"randomForest\", \"digiterEmpty\", \"digiterSmall\", \"digiterLarge\"/' /etc/opencpu/server.conf

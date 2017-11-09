@@ -13,10 +13,10 @@ predict_digit_small <- function(image) {
 
     #modelsmall available in the package
     prediction <- predict(modelsmall, image, type = "response")
-    return(as.numeric(as.character(prediction)))
+    return(list(as.numeric(as.character(prediction))))
 
 }
 
 #Test
-#d.test <- readRDS("C:/Users/vepo/Documents/GitRepo/operationalisierung/mnist_dataframes/mnist_test_dataframe.rds")
+#d.test <- readRDS("../mnist_dataframes/mnist_test_dataframe.rds")
 #predict_digit_small(d.test[1,-785])
