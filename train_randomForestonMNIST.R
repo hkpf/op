@@ -25,7 +25,7 @@ colnames(d.test)[785] <- "Y"
 d.test$Y <- as.factor(d.test$Y)
 saveRDS(d.test, file = "mnist_dataframes/mnist_test_dataframe.rds")
 
-## Train Model on train data ####
+## Train Model on train data with ntree=500 ####
 library(randomForest)
 n <- nrow(d.train) #1000 schnell, 10000 ca. 1h, 
 set.seed(1)
@@ -35,6 +35,17 @@ sys.time.seq <- system.time(
 
 saveRDS(model.rf, file = paste0("models/model_rf_", n, ".rds")) 
 saveRDS(sys.time.seq, file = paste0("models/sys_time_seq_model_rf_", n, ".rds")) 
+
+## Train Model on train data with ntree=50 ####
+library(randomForest)
+n <- 1000 #nrow(d.train) #1000 schnell, 10000 ca. 1h, 
+set.seed(1)
+sys.time.seq <- system.time(
+    model.rf <- randomForest(x = d.train[1:n, -785], y = d.train[1:n, 785], do.trace = TRUE, ntree = 50) #mit data frame viel schneller als mit matrix?!
+)[3]
+
+saveRDS(model.rf, file = paste0("models/model_rf_50tree_", n, ".rds")) 
+saveRDS(sys.time.seq, file = paste0("models/sys_time_seq_model_rf_50tree_", n, ".rds")) 
 
 
 ## How good is the model? ####

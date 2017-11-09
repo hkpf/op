@@ -8,9 +8,10 @@ COPY  digiterEmpty_0.1.0.tar.gz /tmp
 COPY  digiterSmall_0.1.0.tar.gz /tmp
 COPY  digiterLarge_0.1.0.tar.gz /tmp
 
+RUN wget https://cran.r-project.org/src/contrib/jsonlite_1.5.tar.gz -P /tmp
 RUN wget https://cran.r-project.org/src/contrib/plumber_0.4.2.tar.gz -P /tmp
 RUN wget https://cran.r-project.org/src/contrib/randomForest_4.6-12.tar.gz -P /tmp 
-RUN wget https://cran.r-project.org/src/contrib/jsonlite_1.5.tar.gz -P /tmp
+
 
 #Dependencies of plumber:
 RUN wget https://cran.r-project.org/src/contrib/R6_2.2.2.tar.gz -P /tmp
