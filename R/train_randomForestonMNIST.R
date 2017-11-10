@@ -34,7 +34,7 @@ sys.time.seq <- system.time(
     model.rf <- randomForest(x = d.train[, -785], y = d.train[, 785], do.trace = TRUE) #mit data frame viel schneller als mit matrix?!
 )[3]
 
-saveRDS(model.rf, file = paste0("../models/model_rf_", n, ".rds")) 
+saveRDS(model.rf, file = paste0("../models/model_rf_500trees_", n, ".rds")) 
 saveRDS(sys.time.seq, file = paste0("../models/sys_time_seq_model_rf_", n, ".rds")) 
 
 ## Train Model on train data with ntree=50 ####
