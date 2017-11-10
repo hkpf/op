@@ -1,4 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^modelbuider$
+^.Rhistory$
+
+^modelbuilder$
+
+
 
