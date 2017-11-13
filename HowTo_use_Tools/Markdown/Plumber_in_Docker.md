@@ -159,7 +159,7 @@ c.	`docker run -p port_number_container:port_number_host_computer --name <new im
 
 # 7. Make requests
 
-If it stated “Starting server to listen on port 8080”, one can test the port and make GET/POST requests. You can make the requests using R directly, using [Postman](https://www.getpostman.com/ ), using Python or some other languages.
+If it stated “Starting server to listen on port 8080”, one can test the port and make GET/POST requests. The status **"200 OK"** means that the request has succeeded. You can make the requests using R directly, using [Postman](https://www.getpostman.com/ ), using Python or some other languages.
 The url should look like this:
 
 * Local:
