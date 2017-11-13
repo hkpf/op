@@ -16,7 +16,7 @@ A whale should be popping up in the task bar (and “Docker is running"). By rig
 
 * for Windows PowerShell:  `docker run hello-world`
 
-* for Linux in its terminal: `sudo docker run hello-world` for using it as an administrator.
+* for Linux in its command-line : `sudo docker run hello-world` for using it as an administrator.
 
 ### 3. Create the Docker Image and Run It
 For Windows in PowerShell:

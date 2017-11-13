@@ -1,7 +1,12 @@
 ﻿
 # Make Requests
 
-There are many opportunities to make requests. In the following three of it are listed to make GET/POST requests for the R code from [R_RESTApi](https://github.com/IndustrialML/R_RESTApi) in [IndustrialML](https://github.com/IndustrialML) on github.
+There are many opportunities to make requests. In the following three of it are listed to make GET/POST requests for the R code from [R_RESTApi](https://github.com/IndustrialML/R_RESTApi) in [IndustrialML](https://github.com/IndustrialML) on github. 
+
+The most status from a request are:
+* **"200 OK"**: The request has succeeded.
+* **"201 Created"**: The request has been fulfilled and has resulted in one or more new resources being created. 
+* **"400 Bad Request"**: The server cannot or will not process the request due to something that is perceived to be a client error (e.g. malformed request syntax, invalid request message framing, or deceptive request routing).
 
 # 1. R
 

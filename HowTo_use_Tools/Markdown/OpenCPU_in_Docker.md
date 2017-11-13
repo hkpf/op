@@ -102,7 +102,7 @@ c.	`docker run -p port_number_container:port_number_host_computer --name <new im
 
 # 6. Make requests
 
-If it stated “OpenCPU cloud server ready”, one can test the port and make GET/POST requests. You can make the requests using R directly, using [Postman](https://www.getpostman.com/ ), using Python or some other languages.
+If it stated “OpenCPU cloud server ready”, one can test the port and make GET/POST requests. The status **"200 OK"** means that the request has succeeded. You can make the requests using R directly, using [Postman](https://www.getpostman.com/ ), using Python or some other languages.
 The url should look like this:
 
 * Local:
@@ -111,8 +111,23 @@ http://localhost:port_number/ocpu/library/package_name/R/package_function/json
 * On a virtual machine:
 http://lin-op-vm.westeurope.cloudapp.azure.com:port_number/ocpu/library/package_name/R/package_function/json
 
-Examples for requests can be seen in the repository IndustrialML/mlbenchmark (Python), specially in docs in *Make_Requests.md*, and *../openCPU/performenceTest.R* (R).
+Examples for requests can be seen in the repository IndustrialML/mlbenchmark (Python), specially in docs in *Make_Requests.md*, and *../openCPU/performenceTest.R* (R). 
 
+> ### @icon-exclamation-circle Status code
+> Other than normally the status code for OpenCPU is **"201"** which means the request has been fulfilled and has resulted in one or more new resources being created. Therefore one should allow this status comming back e.g. in python in *test/test_mnist.py*: 
+```python
+def call(self, data):
+        response = requests.post(self.url,
+                                 headers=self.headers,
+                                 json=self.preprocess_payload(data)
+        )
+
+        if response.status_code == 200 | response.status_code == 201:
+            return self.preprocess_response(response)
+
+        else:
+            return None
+```
 
 
 
