@@ -1,6 +1,7 @@
 ﻿# Field Report
 
 1. Best way to work together is to make a [github](https://github.com/) or the Zühlke [bitbucket](https://bitbucket.zuehlke.com) repository to make all users the code available and see changes directly. Besides comment always your code and write it as plain as possible.
+  a. If the files are to large for pushing it to github, try [this](https://git-lfs.github.com/)!
 
 2. Our results if it does not work:
 * Test always step by step!
