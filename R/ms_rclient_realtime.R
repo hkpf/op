@@ -15,7 +15,7 @@ library(mrsdeploy)
 library(RevoScaleR)
 library(MicrosoftML)
 
-remoteLogin("http://lin-op-vm.westeurope.cloudapp.azure.com:12800", 
+remoteLogin("http://lin-mlserver.westeurope.cloudapp.azure.com:12800", 
             username = "admin",
             password = "PwF/uOnBo1",
             session = FALSE) 
@@ -36,11 +36,11 @@ remoteLogin("http://lin-op-vm.westeurope.cloudapp.azure.com:12800",
 
 
 d.test <- readRDS("../mnist_dataframes/mnist_test_dataframe.rds")
-colnames(dtest)
+colnames(d.test)
 d.train <- readRDS("../mnist_dataframes/mnist_train_dataframe.rds")
 
 ############################
-# Fit model
+# train models
 ############################
 
 ## Create a formula for a model with a large number of variables:
@@ -48,36 +48,62 @@ xnam <- paste0("V", 1:784)
 (fmla <- as.formula(paste("Y ~ ", paste(xnam, collapse= "+"))))
 
 # once using rxDForest from RevoScaleR: Parallel External Memory Algorithm for Classification and Regression Decision Forests
-n <- 1000
+n <- 60000
 ntree <- 500
 sys.time.seq <- system.time(
-    rxDModelsmall <- rxDForest(formula = fmla, data = d.train[1:n,], nTree = 500)
+    rxDModelsmall <- rxDForest(formula = fmla, data = d.train, nTree = ntree)
 )[3]
 
+# rxDModeltiny:
+# n <- 1000
+# ntree <- 10
 #rxDModeltiny <- rxDForest(formula = fmla, data = d.train[1:1000,], nTree = 10): 70.517 secs
-saveRDS(rxDModeltiny, file = paste0("../models/model_rxDf_", n,"_",ntree, ".rds"))  
+# saveRDS(rxDModeltiny, file = paste0("../models/model_rxDf_", n,"_",ntree, ".rds"))  
+# rxDModeltiny <- readRDS(file = "../models/model_rxDf_1000_10.rds") 
 
-#rxDModelsmall <- rxDForest(formula = fmla, data = d.train[1:1000,], nTree = 500):  2712.877 secs.
+# rxDModelsmall:
+# n <- nrow(d.train)
+# ntree <- 500
+# rxDModelsmall <- rxDForest(formula = fmla, data = d.train, nTree = 50):  2712.877 secs.
 # Elapsed time for DForestEstimation: 2712.877 secs.
 # Elapsed time for BxDTreeBase: 2718.325 secs.
 saveRDS(rxDModelsmall, file = paste0("../models/model_rxDf_", n,"_",ntree, ".rds"))  
-saveRDS(sys.time.seq, file = paste0("../models/sys_time_seq_model_rxDf_", n,"_",ntree, ".rds")) 
+saveRDS(sys.time.seq, file = paste0("../models/sys_time_seq_model_rxDf_", ntree,"trees_",n, ".rds")) 
 
+
+# rxDModellarge: 
+# n <- nrow(d.train)
+# ntree <- 500
 #  rxDModellarge <- rxDForest(formula = fmla, data = d.train, nTree = 500)
+# Elapsed time for DForestEstimation: 10904.847 secs.
+# Elapsed time for BxDTreeBase: 10928.858 secs.
 saveRDS(rxDModellarge, file = paste0("../models/model_rxDf_", n,"_",ntree, ".rds")) 
-saveRDS(sys.time.seq, file = paste0("../models/sys_time_seq_model_rxDf_", n,"_",ntree, ".rds")) 
+saveRDS(sys.time.seq, file = paste0("../models/sys_time_seq_model_rxDf_", ntree,"trees_",n, ".rds")) 
+
+
+
+############################
+# load models
+############################
+
+#baseline ???
+rxDModelsmall <- readRDS(file = "../models/model_rxDf_50trees_60000.rds")
+rxDModellarge <- readRDS(file = "../models/model_rxDf_500trees_60000.rds")
+
+
 
 ############################
 # prediction local
 ############################
-rxPredict(rxDModelsmall, data = d.test[1,-785]) # geht sehr lange ??
+
+rxPredict(rxDModelsmall, data = d.test[1,-785]) # 0.618 seconds 
+rxPredict(rxDModellarge, data = d.test[1,-785]) # 6.124 seconds (10x so lange wie bei model small)
 
 ############################
 # Create Realtime Rest API
 ############################
 
-# not working yet, since we R Server 9.1.0 on Linux -> need new VM to test that
-realtimeApi <- publishService(
+realtimeApi_small <- publishService(
     serviceType = "Realtime",
     name = "rxDModelsmall",
     code = NULL,
@@ -85,6 +111,54 @@ realtimeApi <- publishService(
     v = "v1.0.0",
     alias = "rxDModelsmallService"
 )
+
+realtimeApi_large <- publishService(
+    serviceType = "Realtime",
+    name = "rxDModellarge",
+    code = NULL,
+    model = rxDModellarge,
+    v = "v1.0.0",
+    alias = "rxDModellargeService"
+)
+
+
+##############################################
+# Get already created Realtime Rest API
+##############################################
+
+realtimeApi_small <- getService("rxDModelsmall", "v1.0.0")
+realtimeApi_large <- getService("rxDModellarge", "v1.0.0")
+
+
+##########################################################
+#           Consume Realtime Service in R                #
+##########################################################
+
+result_small <- realtimeApi_small$rxDModelsmallService(d.test[1,-785])
+str(result_small)
+result_small$outputParameters
+result_small$outputParameters$outputData$Y_Pred
+
+result_large <- realtimeApi_large$rxDModellargeService(d.test[1,-785])
+result_large$outputParameters$outputData$Y_Pred
+
+
+##########################################################
+#         Get Service-specific Swagger File in R         #
+##########################################################
+
+# During this authenticated session, download the  
+# Swagger-based JSON file that defines this service
+
+rtSwagger_small <- realtimeApi_small$swagger()
+write(rtSwagger_small, "../swaggerFiles/swagger_realtime_api_small.json") 
+
+rtSwagger_large <- realtimeApi_large$swagger()
+write(rtSwagger_large, "../swaggerFiles/swagger_realtime_api_large.json") 
+
+
+
+# Share Swagger-based JSON with those who need to consume it
 
 
 
@@ -100,7 +174,7 @@ serviceName <- paste0("kyphosis", round(as.numeric(Sys.time()), 0))
 # Use the variable name for the service and version `v1.0`
 # Assign service to the variable `realtimeApi`.
 
-realtimeApi <- publishService( # --> geht nicht: This Web Node does not support that runtime
+realtimeApi <- publishService( # --> geht nicht: 
     serviceType = "Realtime",
     name = serviceName,
     code = NULL,
@@ -108,6 +182,9 @@ realtimeApi <- publishService( # --> geht nicht: This Web Node does not support 
     v = "v1.0",
     alias = "kyphosisService"
 )
+
+
+
 
 
 ## another code example from MS ####

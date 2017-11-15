@@ -5,14 +5,10 @@
 # To install the necessary R-packages on R Server, you need to do the following in the console on the VM:
 # start R using sudo R
 # using .libPaths() you can find the path of the R libraries:
-#  "/home/soga/R/x86_64-pc-linux-gnu-library/3.3"
-#  "/usr/lib64/microsoft-r/3.3/lib64/R/library"
-
 # "/opt/microsoft/mlserver/9.2.1/libraries/RServer"
 # "/opt/microsoft/mlserver/9.2.1/runtime/R/library"
 
-# if you don't specify anything, the packages are installed in the library in your home directory (first line), but there the apis don't have access to.
-# so you need to install it into the 2nd library, (but this is the deep one where the base R packages are installed, maybe there
+# you need to install it into the 2nd library, because there the apis have access to. (but this is the deep one where the base R packages are installed, maybe there
 # is even a better solution for this)
 # install.packages("randomForest", lib = "/usr/lib64/microsoft-r/3.3/lib64/R/library") -> persistent
 
@@ -53,9 +49,8 @@ remoteLogin("http://lin-mlserver.westeurope.cloudapp.azure.com:12800",
 
 
 # load models
-modellarge <- readRDS(file = "../models/model_rf_60000.rds")
-
-modelsmall <- readRDS(file = "../models/model_rf_1000.rds")
+modellarge <- readRDS(file = "../models/model_rf_500trees_60000.rds")
+modelsmall <- readRDS(file = "../models/model_rf_50trees_60000.rds")
 
 ################################################
 # create REST Apis for prediction
@@ -112,7 +107,7 @@ predictsmall_transp <- function(dataframe_transp){
     predict(modelsmall, newdata = dataframe, type = "response")
 }
 
-api_small_transp <- publishService(
+api_small_transp <- publishService( # takes about 1min
     "modelSmall_transp",
     code = predictsmall_transp,
     model = modelsmall,
@@ -121,7 +116,7 @@ api_small_transp <- publishService(
     v = "v1.0.0"
 )
 #deleteService("modelSmall_transp", "v1.0.0")
-predictsmall_transp(dft)
+#predictsmall_transp(dft)
 
 ####################################
 ## models with normal dataframe ####
@@ -171,7 +166,7 @@ api_empty <- getService("modelEmpty", "v1.0.0")
 dtest <- readRDS("../mnist_dataframes/mnist_test_dataframe.rds")
 
 ## post calls to REST Apis
-result <- api_empty$predictempty(dtest[1,-785])
+result <- api_empty$predictempty(dtest[1,-785]) # works since the empty api does not care about input at all
 str(result)
 result <- api_empty$predictempty(dft)
 str(result)
