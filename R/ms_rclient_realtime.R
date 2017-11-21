@@ -35,55 +35,21 @@ remoteLogin("http://lin-mlserver.westeurope.cloudapp.azure.com:12800",
 # so we use rxDForest
 
 
-d.test <- readRDS("../mnist_dataframes/mnist_test_dataframe.rds")
-colnames(d.test)
-d.train <- readRDS("../mnist_dataframes/mnist_train_dataframe.rds")
-
-############################
-# train models
-############################
-
-## Create a formula for a model with a large number of variables:
-xnam <- paste0("V", 1:784)
-(fmla <- as.formula(paste("Y ~ ", paste(xnam, collapse= "+"))))
-
-# once using rxDForest from RevoScaleR: Parallel External Memory Algorithm for Classification and Regression Decision Forests
-n <- 60000
-ntree <- 500
-sys.time.seq <- system.time(
-    rxDModelsmall <- rxDForest(formula = fmla, data = d.train, nTree = ntree)
-)[3]
-
-# rxDModeltiny:
-# n <- 1000
-# ntree <- 10
-#rxDModeltiny <- rxDForest(formula = fmla, data = d.train[1:1000,], nTree = 10): 70.517 secs
-# saveRDS(rxDModeltiny, file = paste0("../models/model_rxDf_", n,"_",ntree, ".rds"))  
-# rxDModeltiny <- readRDS(file = "../models/model_rxDf_1000_10.rds") 
-
-# rxDModelsmall:
-# n <- nrow(d.train)
-# ntree <- 500
-# rxDModelsmall <- rxDForest(formula = fmla, data = d.train, nTree = 50):  2712.877 secs.
-# Elapsed time for DForestEstimation: 2712.877 secs.
-# Elapsed time for BxDTreeBase: 2718.325 secs.
-saveRDS(rxDModelsmall, file = paste0("../models/model_rxDf_", n,"_",ntree, ".rds"))  
-saveRDS(sys.time.seq, file = paste0("../models/sys_time_seq_model_rxDf_", ntree,"trees_",n, ".rds")) 
 
 
-# rxDModellarge: 
-# n <- nrow(d.train)
-# ntree <- 500
-#  rxDModellarge <- rxDForest(formula = fmla, data = d.train, nTree = 500)
-# Elapsed time for DForestEstimation: 10904.847 secs.
-# Elapsed time for BxDTreeBase: 10928.858 secs.
-saveRDS(rxDModellarge, file = paste0("../models/model_rxDf_", n,"_",ntree, ".rds")) 
-saveRDS(sys.time.seq, file = paste0("../models/sys_time_seq_model_rxDf_", ntree,"trees_",n, ".rds")) 
 
+# empty model
+rxDModelempty <- rxDForest(formula = Y ~ , data = d.train, nTree = 1)
+
+?rxFastLinear
+# as the closest represtentation of an empty model, use a linear model with only intercept (returns always one number)
+rxDLinearIntercept <- rxLinMod(Y ~ 1, data = d.train) # not working, need to use rxSummary instead, see https://docs.microsoft.com/en-us/machine-learning-server/r/how-to-revoscaler-linear-model
+rxDLinearIntercept <- rxSummary( ~ Y, data = d.train) # hmm but Y is categorical, need a classifier, which e.g. always predicts the same class
+rxPredict(rxDLinearIntercept, data = d.test[1,-785])
 
 
 ############################
-# load models
+# load trained models
 ############################
 
 #baseline ???
@@ -91,11 +57,11 @@ rxDModelsmall <- readRDS(file = "../models/model_rxDf_50trees_60000.rds")
 rxDModellarge <- readRDS(file = "../models/model_rxDf_500trees_60000.rds")
 
 
-
 ############################
 # prediction local
 ############################
 
+d.test <- readRDS("../mnist_dataframes/mnist_test_dataframe.rds")
 rxPredict(rxDModelsmall, data = d.test[1,-785]) # 0.618 seconds 
 rxPredict(rxDModellarge, data = d.test[1,-785]) # 6.124 seconds (10x so lange wie bei model small)
 
@@ -120,6 +86,30 @@ realtimeApi_large <- publishService(
     v = "v1.0.0",
     alias = "rxDModellargeService"
 )
+
+# 
+# rxPredict(rxDModelsmall, data = d.test[1,-785]) 
+# 
+# 
+# rxpredictsmall <- function(dataframe){
+#     rxPredict(rxDModelsmall, data = dataframe) 
+# }
+# 
+# 
+# 
+# standardApi_small <- publishService(
+#     serviceType = "Standard",
+#     name = "rxDModelsmall",
+#     code = rxpredictsmall,
+#     model = rxDModelsmall,
+#     inputs = list(dataframe = "data.frame"),
+#     outputs = list(label = "numeric")
+#     v = "v1.0.0",
+#     alias = "rxDModelsmallStandard"
+# )
+# 
+# 
+# predict(modellarge, data = d.test[1,-785])
 
 
 ##############################################
@@ -163,7 +153,7 @@ write(rtSwagger_large, "../swaggerFiles/swagger_realtime_api_large.json")
 
 
 
-## tryout mit bsp von HP: ####
+## tryout mit bsp von HP: #### # beide nur 81 Beob. und nur 2 variablen
 # from https://docs.microsoft.com/de-de/machine-learning-server/operationalize/how-to-deploy-web-service-publish-manage-in-r
 kyphosisModel <- rxLogit(Kyphosis ~ Age, data=kyphosis)
 testData <- data.frame(Kyphosis=c("absent"), Age=c(71), Number=c(3), Start=c(5))
@@ -183,7 +173,8 @@ realtimeApi <- publishService( # --> geht nicht:
     alias = "kyphosisService"
 )
 
-
+result <- realtimeApi$kyphosisService(testData)
+result$outputParameters$outputData$Kyphosis_Pred
 
 
 
@@ -200,7 +191,7 @@ control <- rpart.control(minsplit = 5, minbucket = 2, cp = 0.01, maxdepth = 10,
 cost <- 1 + seq(length(attr(terms(form), 'term.labels')));
 myModel <- rxDTree(formula = form, data = kyphosis, pweights = 'Age', method = method, parms = parms,
                    control = control, cost = cost, maxNumBins = 100, maxRowsInMemory = if(exists('.maxRowsInMemory')) .maxRowsInMemory else -1)
-myData <- data.frame(Number=c(70), Start=c(3)); op1 <- rxPredict(myModel, data = myData);
+myData <- data.frame(Number=c(70), Start=c(3))
 op1 <- rxPredict(myModel, data = myData)
 
 print(op1)
