@@ -102,7 +102,7 @@ predictsmall_transp <- function(dataframe_transp){
     library(randomForest)
     mat <- matrix(nrow = 1, ncol = nrow(dataframe_transp))
     dataframe <- as.data.frame(mat)
-    #colnames(dataframe) <- c("mpg","cyl","disp","hp","drat","wt","qsec","vs","am","gear","carb") # not needed in predictsmall, colnames of dataframe V1,...,V784 autom.
+    #colnames(dataframe) <- c(...) # not needed, colnames of dataframe are V1,...,V784 autom.
     dataframe[1,] <- dataframe_transp[,1]
     predict(modelsmall, newdata = dataframe, type = "response")
 }
